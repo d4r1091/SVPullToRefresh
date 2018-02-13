@@ -11,36 +11,34 @@
 
 @class SVInfiniteScrollingView;
 
-@interface UIScrollView (SVInfiniteScrolling)
-
-typedef NS_ENUM(NSUInteger, SVInfiniteScrollingPosition) {
-    SVInfiniteScrollingPositionTop = 0,
-    SVInfiniteScrollingPositionBottom,
+typedef NS_ENUM(NSUInteger, SVInfiniteScrollingPosition){
+    SVInfiniteScrollingPositionTop,
+    SVInfiniteScrollingPositionBottom
 };
 
-- (void)addInfiniteScrollingWithActionHandler:(void (^)(void))actionHandler;
-- (void)addInfiniteScrollinhWithActionHandler:(void (^)(void))actionHandler position:(SVInfiniteScrollingPosition)position;
-- (void)triggerInfiniteScrolling;
+@interface UIScrollView (SVInfiniteScrolling)
 
-@property (nonatomic, strong, readonly) SVInfiniteScrollingView *infiniteScrollingView;
-@property (nonatomic, assign) BOOL showsInfiniteScrolling;
+- (void)addInfiniteScrollingWithActionHandler:(void (^)(void))actionHandler forPosition:(SVInfiniteScrollingPosition)position;
+- (void)triggerInfiniteScrollingForPosition:(SVInfiniteScrollingPosition)position;
+
+- (SVInfiniteScrollingView *)infiniteScrollingViewForPosition:(SVInfiniteScrollingPosition)position;
+- (BOOL)showsInfiniteScrollingForPosition:(SVInfiniteScrollingPosition)position;
+- (void)setShowsInfiniteScrolling:(BOOL)visible forPosition:(SVInfiniteScrollingPosition)position;
 
 @end
 
-
-enum {
-	SVInfiniteScrollingStateStopped = 0,
+typedef NS_ENUM(NSUInteger, SVInfiniteScrollingState){
+    SVInfiniteScrollingStateStopped = 0,
     SVInfiniteScrollingStateTriggered,
     SVInfiniteScrollingStateLoading,
     SVInfiniteScrollingStateAll = 10
 };
 
-typedef NSUInteger SVInfiniteScrollingState;
-
 @interface SVInfiniteScrollingView : UIView
 
 @property (nonatomic, readwrite) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
 @property (nonatomic, readonly) SVInfiniteScrollingState state;
+@property (nonatomic, readonly) SVInfiniteScrollingPosition position;
 @property (nonatomic, readwrite) BOOL enabled;
 
 - (void)setCustomView:(UIView *)view forState:(SVInfiniteScrollingState)state;
